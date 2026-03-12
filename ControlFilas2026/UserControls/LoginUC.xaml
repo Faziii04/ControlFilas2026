@@ -5,32 +5,102 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ControlFilas2026.UserControls"
              mc:Ignorable="d">
-    <Grid Background="{DynamicResource BrushBackground}" VerticalAlignment="Center" HorizontalAlignment="Center">
-        <StackPanel Width="380" VerticalAlignment="Center">
-            <!-- HEADER -->
-            <TextBlock Text="Control de Filas" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource BrushPrimary}" HorizontalAlignment="Center" Margin="0,0,0,4"/>
-            <TextBlock Text="Sistema Bancario 2026" FontSize="13" Foreground="{DynamicResource BrushSecondary}" HorizontalAlignment="Center" Margin="0,0,0,24" FontWeight="Medium"/>
+    <Grid Background="{DynamicResource BrushBackground}">
+        <!-- LOGIN CARD -->
+        <Border Background="{DynamicResource BrushSurface}"
+                CornerRadius="16"
+                Padding="40"
+                MaxWidth="420"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.1"/>
+            </Border.Effect>
             
-            <!-- DIVIDER -->
-            <Rectangle Height="2" Fill="{DynamicResource BrushPrimary}" Width="60" HorizontalAlignment="Center" Margin="0,0,0,24"/>
-            
-            <!-- USERNAME -->
-            <TextBlock Text="Usuario" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource BrushText}" Margin="0,0,0,6"/>
-            <Border Background="{DynamicResource BrushSurface}" BorderBrush="{DynamicResource BrushBorder}" BorderThickness="1" CornerRadius="6" Padding="12,10" Margin="0,0,0,18">
-                <TextBox x:Name="UsernameTextBox" Height="20" FontSize="13" Background="Transparent" BorderThickness="0"/>
-            </Border>
-            
-            <!-- PASSWORD -->
-            <TextBlock Text="Contraseña" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource BrushText}" Margin="0,0,0,6"/>
-            <Border Background="{DynamicResource BrushSurface}" BorderBrush="{DynamicResource BrushBorder}" BorderThickness="1" CornerRadius="6" Padding="12,10" Margin="0,0,0,24">
-                <PasswordBox x:Name="PasswordBox" Height="20" FontSize="13" Background="Transparent" BorderThickness="0"/>
-            </Border>
-            
-            <!-- LOGIN BUTTON -->
-            <Button Content="Ingresar" Style="{StaticResource ButtonPrimary}" Height="44" FontSize="15" Name="LoginButton" Margin="0,0,0,12"/>
-            
-            <!-- ERROR MESSAGE -->
-            <TextBlock x:Name="ErrorMessage" Foreground="{DynamicResource BrushAccent}" FontSize="12" TextWrapping="Wrap" Visibility="Collapsed" FontWeight="SemiBold" TextAlignment="Center"/>
-        </StackPanel>
+            <StackPanel>
+                <!-- LOGO -->
+                <Border Background="{DynamicResource BrushPrimary}"
+                        Width="80" Height="80"
+                        CornerRadius="40"
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,24">
+                    <TextBlock Text="🏦" FontSize="42" 
+                               HorizontalAlignment="Center" 
+                               VerticalAlignment="Center"/>
+                </Border>
+                
+                <!-- TITLE -->
+                <TextBlock Text="Control de Filas"
+                           Style="{DynamicResource HeaderText}"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,4"/>
+                <TextBlock Text="Sistema Bancario 2026"
+                           Style="{DynamicResource CaptionText}"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,32"
+                           FontWeight="Medium"/>
+                
+                <!-- USERNAME -->
+                <TextBlock Text="Usuario"
+                           Style="{DynamicResource BodyText}"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,8"/>
+                <Border Background="{DynamicResource BrushCard}"
+                        BorderBrush="{DynamicResource BrushBorder}"
+                        BorderThickness="2"
+                        CornerRadius="8"
+                        Padding="16,12"
+                        Margin="0,0,0,20">
+                    <TextBox x:Name="UsernameTextBox"
+                             FontSize="14"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             Foreground="{DynamicResource BrushText}"/>
+                </Border>
+                
+                <!-- PASSWORD -->
+                <TextBlock Text="Contraseña"
+                           Style="{DynamicResource BodyText}"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,8"/>
+                <Border Background="{DynamicResource BrushCard}"
+                        BorderBrush="{DynamicResource BrushBorder}"
+                        BorderThickness="2"
+                        CornerRadius="8"
+                        Padding="16,12"
+                        Margin="0,0,0,24">
+                    <PasswordBox x:Name="PasswordBox"
+                                 FontSize="14"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 Foreground="{DynamicResource BrushText}"/>
+                </Border>
+                
+                <!-- LOGIN BUTTON -->
+                <Button Content="Ingresar"
+                        Style="{DynamicResource ButtonPrimary}"
+                        Height="48"
+                        FontSize="16"
+                        Name="LoginButton"
+                        Margin="0,0,0,16"/>
+                
+                <!-- THEME TOGGLE -->
+                <Button Content="🌙 Tema Oscuro"
+                        Style="{DynamicResource ButtonAccent}"
+                        Height="36"
+                        FontSize="12"
+                        Name="ThemeToggleButton"
+                        Margin="0,0,0,16"/>
+                
+                <!-- ERROR MESSAGE -->
+                <TextBlock x:Name="ErrorMessage"
+                           Foreground="{DynamicResource BrushError}"
+                           FontSize="12"
+                           TextWrapping="Wrap"
+                           Visibility="Collapsed"
+                           FontWeight="SemiBold"
+                           TextAlignment="Center"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>
