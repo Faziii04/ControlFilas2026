@@ -1,0 +1,66 @@
+﻿<UserControl x:Class="ControlFilas2026.UserControls.CajasUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ControlFilas2026.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="{StaticResource BackgroundBrush}">
+        <StackPanel Margin="15">
+            <TextBlock Text="Estado de Cajas" 
+                       Style="{StaticResource HeaderTextStyle}"/>
+            
+            <!-- Boxes Grid -->
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl Name="BoxesItemsControl">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource BoxCardStyle}"
+                                    Width="110"
+                                    Height="140"
+                                    Margin="8">
+                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <!-- Box Number -->
+                                    <TextBlock Text="{Binding Name}" 
+                                               FontSize="12" 
+                                               Foreground="{StaticResource TextBrush}"
+                                               HorizontalAlignment="Center"
+                                               Margin="0,0,0,8"
+                                               FontWeight="SemiBold"/>
+                                    
+                                    <!-- Status Circle -->
+                                    <Ellipse Width="50" 
+                                             Height="50" 
+                                             Fill="{StaticResource SuccessBrush}"
+                                             HorizontalAlignment="Center"
+                                             Margin="0,0,0,8"/>
+                                    
+                                    <!-- Status Text -->
+                                    <TextBlock Text="Disponible" 
+                                               FontSize="10" 
+                                               Foreground="{StaticResource TextBrush}"
+                                               HorizontalAlignment="Center"
+                                               FontWeight="SemiBold"/>
+                                    
+                                    <!-- Current Client -->
+                                    <TextBlock Text="Sin cliente" 
+                                               FontSize="9" 
+                                               Foreground="{StaticResource BorderBrush}"
+                                               HorizontalAlignment="Center"
+                                               Margin="0,4,0,0"
+                                               FontStyle="Italic"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </StackPanel>
+    </Grid>
+</UserControl>
