@@ -8,36 +8,43 @@
     <Grid Background="{DynamicResource BrushBackground}">
         <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="16">
             <StackPanel>
-                <TextBlock Text="Administración" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource BrushPrimary}" Margin="0,0,0,16"/>
-                
-                <!-- CAJAS SECTION -->
-                <Border Background="{DynamicResource BrushSurface}" BorderBrush="{DynamicResource BrushBorder}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                <TextBlock Text="Administración" Style="{DynamicResource SubHeaderText}" Margin="0,0,0,16"/>
+
+                <Border Style="{DynamicResource CardStyle}">
                     <StackPanel>
-                        <TextBlock Text="Gestión de Cajas" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource BrushPrimary}" Margin="0,0,0,12"/>
-                        
-                        <TextBlock Text="Seleccionar Caja" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource BrushText}" Margin="0,0,0,6"/>
-                        <ComboBox x:Name="BoxComboBox" Height="38" Padding="10" FontSize="13" Background="{DynamicResource BrushSurface}" BorderBrush="{DynamicResource BrushBorder}" BorderThickness="1" Margin="0,0,0,14"/>
-                        
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" Content="✓ Habilitar" Style="{DynamicResource ButtonSuccess}" Height="38" Margin="0,0,6,0" Name="EnableBoxButton"/>
-                            <Button Grid.Column="1" Content="✕ Deshabilitar" Style="{DynamicResource ButtonWarning}" Height="38" Margin="6,0,0,0" Name="DisableBoxButton"/>
-                        </Grid>
-                        
-                        <TextBlock Text="Operaciones Globales" FontSize="12" Foreground="{DynamicResource BrushSecondary}" FontWeight="Bold" Margin="0,14,0,10"/>
-                        <Button Content="✓✓ Habilitar Todas" Style="{DynamicResource ButtonSuccess}" Height="38" Margin="0" Name="EnableAllButton"/>
+                        <TextBlock Text="Gestión de Cajas" Style="{DynamicResource BodyText}" FontWeight="SemiBold" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Caja" Style="{DynamicResource CaptionText}" Margin="0,0,0,6"/>
+                        <ComboBox x:Name="BoxComboBox" Height="38" Margin="0,0,0,12"/>
+
+                        <Button x:Name="EnableBoxButton"
+                                Content="Habilitar Caja"
+                                Style="{DynamicResource ButtonSuccess}"
+                                Height="40"
+                                HorizontalContentAlignment="Center"
+                                Margin="0,0,0,8"/>
+
+                        <Button x:Name="DisableBoxButton"
+                                Content="Deshabilitar Caja"
+                                Style="{DynamicResource ButtonWarning}"
+                                Height="40"
+                                HorizontalContentAlignment="Center"
+                                Margin="0,0,0,8"/>
+
+                        <Button x:Name="EnableAllButton"
+                                Content="Habilitar Todas"
+                                Style="{DynamicResource ButtonPrimary}"
+                                Height="40"
+                                HorizontalContentAlignment="Center"/>
                     </StackPanel>
                 </Border>
-                
-                <!-- QUEUE SECTION -->
-                <Border Background="{DynamicResource BrushSurface}" BorderBrush="{DynamicResource BrushBorder}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,0">
+
+                <Border Style="{DynamicResource CardStyle}">
                     <StackPanel>
-                        <TextBlock Text="Control de Fila" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource BrushPrimary}" Margin="0,0,0,12"/>
-                        <Button Content="▶ Iniciar" Style="{DynamicResource ButtonSuccess}" Height="38" Margin="0,0,0,10" Name="StartQueueButton"/>
-                        <Button Content="⟲ Reiniciar" Style="{DynamicResource ButtonWarning}" Height="38" Margin="0" Name="RestartQueueButton"/>
+                        <TextBlock Text="Control de Fila" Style="{DynamicResource BodyText}" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                        <Button x:Name="StartQueueButton" Content="Iniciar" Style="{DynamicResource ButtonSuccess}" Height="40" Margin="0,0,0,8"/>
+                        <Button x:Name="RestartQueueButton" Content="Reiniciar" Style="{DynamicResource ButtonWarning}" Height="40"/>
+                        <TextBlock x:Name="AdminStatusText" Text="Estado: Detenida" Style="{DynamicResource CaptionText}" Margin="0,10,0,0"/>
                     </StackPanel>
                 </Border>
             </StackPanel>

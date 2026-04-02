@@ -15,7 +15,7 @@
         </Grid.Background>
         
         <!-- MAIN LOGIN CONTAINER -->
-        <Grid MaxWidth="450" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid Width="520" MaxWidth="560" HorizontalAlignment="Center" VerticalAlignment="Center">
             <!-- GLASSMORPHISM CARD -->
             <Border Background="White"
                     CornerRadius="24"
