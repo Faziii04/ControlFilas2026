@@ -8,23 +8,30 @@ namespace ControlFilas2026;
 
 public partial class MainWindow : Window
 {
-    private readonly DoublyLinkedList queue = new DoublyLinkedList();
-    private readonly Box[] boxes = new Box[7];
+    private readonly LinkedList queue = new();
+
+    private readonly bool[] boxEnabled = new bool[7];
+    private readonly string?[] boxCurrentTicket = new string?[7];
 
     private Button[] callButtons = null!;
     private Button[] freeButtons = null!;
     private TextBlock[] statusTexts = null!;
     private TextBlock[] currentTexts = null!;
 
-    private bool isDarkTheme;
-    private bool queueRunning;
+    private bool darkTheme;
+    private bool queueStarted;
     private int normalCounter;
     private int specialCounter;
 
     public MainWindow()
     {
         InitializeComponent();
-        for (int i = 0; i < boxes.Length; i++) boxes[i] = new Box(i + 1);
+
+        for (int i = 0; i < boxEnabled.Length; i++)
+        {
+            boxEnabled[i] = true;
+        }
+
         InitializeLogin();
         InitializeDashboard();
     }
@@ -37,44 +44,69 @@ public partial class MainWindow : Window
 
     private void InitializeDashboard()
     {
-        ClienteControl.GetTicketButton.Click += (_, _) => EnqueueCustomer(false);
-        ClienteControl.GetSpecialTicketButton.Click += (_, _) => EnqueueCustomer(true);
+        ClienteControl.GetTicketButton.Click += (_, _) => TakeTicket(isSpecial: false);
+        ClienteControl.GetSpecialTicketButton.Click += (_, _) => TakeTicket(isSpecial: true);
 
-        callButtons = new Button[]
-        {
-            CajasControl.CallBox1Button, CajasControl.CallBox2Button, CajasControl.CallBox3Button, CajasControl.CallBox4Button,
-            CajasControl.CallBox5Button, CajasControl.CallBox6Button, CajasControl.CallBox7Button
-        };
-        freeButtons = new Button[]
-        {
-            CajasControl.FreeBox1Button, CajasControl.FreeBox2Button, CajasControl.FreeBox3Button, CajasControl.FreeBox4Button,
-            CajasControl.FreeBox5Button, CajasControl.FreeBox6Button, CajasControl.FreeBox7Button
-        };
-        statusTexts = new TextBlock[]
-        {
-            CajasControl.Box1StatusText, CajasControl.Box2StatusText, CajasControl.Box3StatusText, CajasControl.Box4StatusText,
-            CajasControl.Box5StatusText, CajasControl.Box6StatusText, CajasControl.Box7StatusText
-        };
-        currentTexts = new TextBlock[]
-        {
-            CajasControl.Box1CurrentText, CajasControl.Box2CurrentText, CajasControl.Box3CurrentText, CajasControl.Box4CurrentText,
-            CajasControl.Box5CurrentText, CajasControl.Box6CurrentText, CajasControl.Box7CurrentText
-        };
+        callButtons =
+        [
+            CajasControl.CallBox1Button,
+            CajasControl.CallBox2Button,
+            CajasControl.CallBox3Button,
+            CajasControl.CallBox4Button,
+            CajasControl.CallBox5Button,
+            CajasControl.CallBox6Button,
+            CajasControl.CallBox7Button
+        ];
+
+        freeButtons =
+        [
+            CajasControl.FreeBox1Button,
+            CajasControl.FreeBox2Button,
+            CajasControl.FreeBox3Button,
+            CajasControl.FreeBox4Button,
+            CajasControl.FreeBox5Button,
+            CajasControl.FreeBox6Button,
+            CajasControl.FreeBox7Button
+        ];
+
+        statusTexts =
+        [
+            CajasControl.Box1StatusText,
+            CajasControl.Box2StatusText,
+            CajasControl.Box3StatusText,
+            CajasControl.Box4StatusText,
+            CajasControl.Box5StatusText,
+            CajasControl.Box6StatusText,
+            CajasControl.Box7StatusText
+        ];
+
+        currentTexts =
+        [
+            CajasControl.Box1CurrentText,
+            CajasControl.Box2CurrentText,
+            CajasControl.Box3CurrentText,
+            CajasControl.Box4CurrentText,
+            CajasControl.Box5CurrentText,
+            CajasControl.Box6CurrentText,
+            CajasControl.Box7CurrentText
+        ];
 
         for (int i = 0; i < 7; i++)
         {
+            int boxIndex = i;
             int boxNumber = i + 1;
-            callButtons[i].Click += (_, _) => CallNextForBox(boxNumber);
-            freeButtons[i].Click += (_, _) => FreeBox(boxNumber);
+
+            callButtons[i].Click += (_, _) => CallNext(boxIndex, boxNumber);
+            freeButtons[i].Click += (_, _) => FreeBox(boxIndex, boxNumber);
             AdminControl.BoxComboBox.Items.Add($"Caja {boxNumber}");
         }
 
         AdminControl.BoxComboBox.SelectedIndex = 0;
         AdminControl.EnableBoxButton.Click += (_, _) => SetSelectedBoxEnabled(true);
         AdminControl.DisableBoxButton.Click += (_, _) => SetSelectedBoxEnabled(false);
-        AdminControl.EnableAllButton.Click += (_, _) => { foreach (var b in boxes) b.IsEnabled = true; RefreshBoxes(); };
-        AdminControl.StartQueueButton.Click += (_, _) => { queueRunning = true; AdminControl.AdminStatusText.Text = "Estado: Iniciada"; AddCallMessage("Fila iniciada."); };
-        AdminControl.RestartQueueButton.Click += (_, _) => RestartQueue();
+        AdminControl.EnableAllButton.Click += (_, _) => EnableAllBoxes();
+        AdminControl.StartQueueButton.Click += (_, _) => StartQueue();
+        AdminControl.RestartQueueButton.Click += (_, _) => RestartAll();
 
         RefreshBoxes();
         RefreshQueueCount();
@@ -82,18 +114,18 @@ public partial class MainWindow : Window
 
     private void HandleLogin()
     {
-        var username = LoginControl.UsernameTextBox.Text;
-        var password = LoginControl.PasswordBox.Password;
+        string username = LoginControl.UsernameTextBox.Text;
+        string password = LoginControl.PasswordBox.Password;
 
         if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
         {
-            ShowError("Por favor ingrese usuario y contraseña");
+            ShowError("Ingrese usuario y contraseña.");
             return;
         }
 
         if (username != "admin" || password != "123")
         {
-            ShowError("Usuario o contraseña incorrectos");
+            ShowError("Usuario o contraseña incorrectos.");
             return;
         }
 
@@ -104,124 +136,202 @@ public partial class MainWindow : Window
         ClienteControl.Visibility = Visibility.Visible;
     }
 
-    private void EnqueueCustomer(bool isSpecial)
+    private void TakeTicket(bool isSpecial)
     {
-        if (!queueRunning) { AddCallMessage("La fila no está iniciada."); return; }
+        if (!queueStarted)
+        {
+            ShowInfo("La fila no está iniciada.");
+            return;
+        }
 
-        var ticket = isSpecial
-            ? new Ticket($"E-{++specialCounter:000}", true)
-            : new Ticket($"N-{++normalCounter:000}", false);
+        Ticket ticket;
 
-        if (isSpecial) queue.InsertAt(queue.FindInsertIndexForSpecial(), ticket);
-        else queue.AddLast(ticket);
+        if (isSpecial)
+        {
+            specialCounter++;
+            ticket = new Ticket($"E-{specialCounter:000}", true);
+            queue.EnqueueSpecial(ticket);
+        }
+        else
+        {
+            normalCounter++;
+            ticket = new Ticket($"N-{normalCounter:000}", false);
+            queue.EnqueueNormal(ticket);
+        }
 
         ClienteControl.TicketNumberDisplay.Text = ticket.Number;
-        AddCallMessage($"Turno tomado: {ticket.Number}");
+        ShowInfo($"Turno generado: {ticket.Number}");
         RefreshQueueCount();
     }
 
-    private void CallNextForBox(int boxNumber)
+    private void CallNext(int boxIndex, int boxNumber)
     {
-        var box = boxes[boxNumber - 1];
+        if (!queueStarted)
+        {
+            ShowInfo("Primero inicie la fila.");
+            return;
+        }
 
-        if (!queueRunning) { AddCallMessage("Inicie la fila para llamar clientes."); return; }
-        if (!box.IsEnabled) { AddCallMessage($"Caja {boxNumber} está deshabilitada."); return; }
-        if (!string.IsNullOrEmpty(box.CurrentTicket)) { AddCallMessage($"Caja {boxNumber} ya está atendiendo {box.CurrentTicket}."); return; }
-        if (!queue.TryRemoveFirst(out Ticket? ticket) || ticket is null) { AddCallMessage("No hay clientes en espera."); return; }
+        if (!boxEnabled[boxIndex])
+        {
+            ShowInfo($"Caja {boxNumber} deshabilitada.");
+            return;
+        }
 
-        box.CurrentTicket = ticket.Number;
-        AddCallMessage($"Caja {boxNumber} llama a {ticket.Number}");
+        if (!string.IsNullOrEmpty(boxCurrentTicket[boxIndex]))
+        {
+            ShowInfo($"Caja {boxNumber} está ocupada.");
+            return;
+        }
+
+        if (!queue.TryDequeue(out Ticket? ticket) || ticket is null)
+        {
+            ShowInfo("No hay personas en espera.");
+            return;
+        }
+
+        boxCurrentTicket[boxIndex] = ticket.Number;
+        LogCall($"Caja {boxNumber} llama a {ticket.Number}");
+
         RefreshBoxes();
         RefreshQueueCount();
     }
 
-    private void FreeBox(int boxNumber)
+    private void FreeBox(int boxIndex, int boxNumber)
     {
-        var box = boxes[boxNumber - 1];
-        if (string.IsNullOrEmpty(box.CurrentTicket)) return;
+        if (string.IsNullOrEmpty(boxCurrentTicket[boxIndex]))
+        {
+            return;
+        }
 
-        AddCallMessage($"Caja {boxNumber} finalizó {box.CurrentTicket}");
-        box.CurrentTicket = null;
+        LogCall($"Caja {boxNumber} finalizó {boxCurrentTicket[boxIndex]}");
+        boxCurrentTicket[boxIndex] = null;
+
         RefreshBoxes();
     }
 
     private void SetSelectedBoxEnabled(bool enabled)
     {
-        int idx = AdminControl.BoxComboBox.SelectedIndex;
-        if (idx < 0 || idx >= boxes.Length) return;
+        int index = AdminControl.BoxComboBox.SelectedIndex;
 
-        boxes[idx].IsEnabled = enabled;
-        if (!enabled) boxes[idx].CurrentTicket = null;
+        if (index < 0 || index >= boxEnabled.Length)
+        {
+            ShowInfo("Seleccione una caja válida.");
+            return;
+        }
+
+        boxEnabled[index] = enabled;
+
+        if (!enabled)
+        {
+            boxCurrentTicket[index] = null;
+        }
+
         RefreshBoxes();
+        ShowInfo(enabled ? "Caja habilitada." : "Caja deshabilitada.");
     }
 
-    private void RestartQueue()
+    private void EnableAllBoxes()
     {
-        queueRunning = false;
+        for (int i = 0; i < boxEnabled.Length; i++)
+        {
+            boxEnabled[i] = true;
+        }
+
+        RefreshBoxes();
+        ShowInfo("Todas las cajas fueron habilitadas.");
+    }
+
+    private void StartQueue()
+    {
+        queueStarted = true;
+        AdminControl.AdminStatusText.Text = "Estado: Iniciada";
+        ShowInfo("Fila iniciada.");
+    }
+
+    private void RestartAll()
+    {
+        queueStarted = false;
         normalCounter = 0;
         specialCounter = 0;
-        while (queue.TryRemoveFirst(out _)) { }
+        queue.Clear();
 
-        foreach (var box in boxes)
+        for (int i = 0; i < boxEnabled.Length; i++)
         {
-            box.IsEnabled = true;
-            box.CurrentTicket = null;
+            boxEnabled[i] = true;
+            boxCurrentTicket[i] = null;
         }
 
         ClienteControl.CallsListBox.Items.Clear();
         ClienteControl.TicketNumberDisplay.Text = "--";
         AdminControl.AdminStatusText.Text = "Estado: Detenida";
+
         RefreshBoxes();
         RefreshQueueCount();
-        AddCallMessage("Fila reiniciada.");
+        ShowInfo("Sistema reiniciado.");
     }
 
-    private void RefreshQueueCount() => ClienteControl.QueuePositionText.Text = queue.Count.ToString();
+    private void RefreshQueueCount()
+    {
+        ClienteControl.QueuePositionText.Text = queue.Count.ToString();
+    }
 
     private void RefreshBoxes()
     {
-        for (int i = 0; i < boxes.Length; i++)
+        SolidColorBrush successBrush = (SolidColorBrush)FindResource("BrushSuccess");
+        SolidColorBrush warningBrush = (SolidColorBrush)FindResource("BrushWarning");
+        SolidColorBrush errorBrush = (SolidColorBrush)FindResource("BrushError");
+
+        for (int i = 0; i < 7; i++)
         {
-            var box = boxes[i];
-            if (!box.IsEnabled)
+            if (!boxEnabled[i])
             {
                 statusTexts[i].Text = "Deshabilitada";
-                statusTexts[i].Foreground = (SolidColorBrush)FindResource("BrushError");
+                statusTexts[i].Foreground = errorBrush;
                 currentTexts[i].Text = "Sin cliente";
                 continue;
             }
 
-            if (string.IsNullOrEmpty(box.CurrentTicket))
+            if (string.IsNullOrEmpty(boxCurrentTicket[i]))
             {
                 statusTexts[i].Text = "Disponible";
-                statusTexts[i].Foreground = (SolidColorBrush)FindResource("BrushSuccess");
+                statusTexts[i].Foreground = successBrush;
                 currentTexts[i].Text = "Sin cliente";
             }
             else
             {
                 statusTexts[i].Text = "Atendiendo";
-                statusTexts[i].Foreground = (SolidColorBrush)FindResource("BrushWarning");
-                currentTexts[i].Text = box.CurrentTicket;
+                statusTexts[i].Foreground = warningBrush;
+                currentTexts[i].Text = boxCurrentTicket[i];
             }
         }
     }
 
-    private void AddCallMessage(string message)
+    private void LogCall(string message)
     {
         ClienteControl.CallsListBox.Items.Insert(0, message);
-        if (ClienteControl.CallsListBox.Items.Count > 30) ClienteControl.CallsListBox.Items.RemoveAt(30);
+
+        if (ClienteControl.CallsListBox.Items.Count > 40)
+        {
+            ClienteControl.CallsListBox.Items.RemoveAt(40);
+        }
     }
 
     private void ShowError(string message)
     {
-        LoginControl.ErrorMessage.Text = message;
-        LoginControl.ErrorContainer.Visibility = Visibility.Visible;
+        MessageBox.Show(message, "Control de Filas", MessageBoxButton.OK, MessageBoxImage.Warning);
+        LoginControl.ErrorContainer.Visibility = Visibility.Collapsed;
+    }
+
+    private void ShowInfo(string message)
+    {
+        MessageBox.Show(message, "Control de Filas", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     private void ToggleTheme()
     {
-        isDarkTheme = !isDarkTheme;
-        ThemeHelper.ApplyTheme(isDarkTheme);
-        LoginControl.ThemeToggleButton.Content = isDarkTheme ? "☀️ Tema Claro" : "🌙 Tema Oscuro";
+        darkTheme = !darkTheme;
+        ThemeHelper.ApplyTheme(darkTheme);
+        LoginControl.ThemeToggleButton.Content = darkTheme ? "Tema claro" : "Tema oscuro";
     }
 }

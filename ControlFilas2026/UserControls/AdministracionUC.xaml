@@ -15,7 +15,9 @@
                         <TextBlock Text="Gestión de Cajas" Style="{DynamicResource BodyText}" FontWeight="SemiBold" Margin="0,0,0,10"/>
 
                         <TextBlock Text="Caja" Style="{DynamicResource CaptionText}" Margin="0,0,0,6"/>
-                        <ComboBox x:Name="BoxComboBox" Height="38" Margin="0,0,0,12"/>
+                        <ComboBox x:Name="BoxComboBox"
+                                  Style="{DynamicResource ProfessionalComboBox}"
+                                  Margin="0,0,0,12"/>
 
                         <Button x:Name="EnableBoxButton"
                                 Content="Habilitar Caja"

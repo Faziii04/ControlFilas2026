@@ -5,60 +5,51 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ControlFilas2026.UserControls"
              mc:Ignorable="d">
-    <Grid>
-        <!-- BACKGROUND GRADIENT OVERLAY -->
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#F8FAFC" Offset="0"/>
-                <GradientStop Color="#E2E8F0" Offset="1"/>
-            </LinearGradientBrush>
-        </Grid.Background>
-        
-        <!-- MAIN LOGIN CONTAINER -->
+    <Grid Background="{DynamicResource BrushBackground}">
         <Grid Width="520" MaxWidth="560" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <!-- GLASSMORPHISM CARD -->
-            <Border Background="White"
-                    CornerRadius="24"
-                    Padding="48"
+            <Border Background="{DynamicResource BrushSurface}"
+                    BorderBrush="{DynamicResource BrushBorder}"
+                    BorderThickness="1"
+                    CornerRadius="14"
+                    Padding="44"
                     Margin="20">
                 <Border.Effect>
-                    <DropShadowEffect BlurRadius="40" ShadowDepth="8" Opacity="0.15" Direction="270"/>
+                    <DropShadowEffect BlurRadius="18" ShadowDepth="3" Opacity="0.08" Direction="270"/>
                 </Border.Effect>
-                
+
                 <StackPanel>
-                    <!-- MODERN LOGO -->
-                    <Grid HorizontalAlignment="Center" Margin="0,0,0,32">
-                        <Ellipse Width="96" Height="96" Fill="{DynamicResource GradientPrimary}"/>
-                        <TextBlock Text="🏦" FontSize="48" 
-                                   HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center"
-                                   Effect="{x:Null}"/>
+                    <Grid HorizontalAlignment="Center" Margin="0,0,0,26">
+                        <Ellipse Width="78" Height="78" Fill="{DynamicResource GradientPrimary}"/>
+                        <TextBlock Text="CF"
+                                   Foreground="White"
+                                   FontSize="22"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
                     </Grid>
-                    
-                    <!-- TITLE SECTION -->
+
                     <TextBlock Text="Control de Filas"
                                Style="{DynamicResource HeaderText}"
                                HorizontalAlignment="Center"
-                               Margin="0,0,0,8"/>
-                    <TextBlock Text="Sistema Bancario Digital"
+                               Margin="0,0,0,6"/>
+                    <TextBlock Text="Sistema Bancario"
                                Style="{DynamicResource CaptionText}"
                                HorizontalAlignment="Center"
                                FontWeight="Medium"
-                               Margin="0,0,0,40"/>
-                    
-                    <!-- USERNAME INPUT -->
-                    <StackPanel Margin="0,0,0,24">
-                        <TextBlock Text="Nombre de Usuario"
+                               Margin="0,0,0,34"/>
+
+                    <StackPanel Margin="0,0,0,22">
+                        <TextBlock Text="Usuario"
                                    Style="{DynamicResource LabelText}"
-                                   Margin="0,0,0,12"/>
+                                   Margin="0,0,0,10"/>
                         <Border Background="{DynamicResource BrushCard}"
                                 BorderBrush="{DynamicResource BrushBorder}"
-                                BorderThickness="2"
-                                CornerRadius="12"
-                                Padding="20,16"
-                                Height="56">
+                                BorderThickness="1.5"
+                                CornerRadius="10"
+                                Padding="18,14"
+                                Height="52">
                             <TextBox x:Name="UsernameTextBox"
-                                     FontSize="15"
+                                     FontSize="14"
                                      FontWeight="Medium"
                                      Background="Transparent"
                                      BorderThickness="0"
@@ -67,20 +58,19 @@
                                      Text="admin"/>
                         </Border>
                     </StackPanel>
-                    
-                    <!-- PASSWORD INPUT -->
-                    <StackPanel Margin="0,0,0,32">
+
+                    <StackPanel Margin="0,0,0,28">
                         <TextBlock Text="Contraseña"
                                    Style="{DynamicResource LabelText}"
-                                   Margin="0,0,0,12"/>
+                                   Margin="0,0,0,10"/>
                         <Border Background="{DynamicResource BrushCard}"
                                 BorderBrush="{DynamicResource BrushBorder}"
-                                BorderThickness="2"
-                                CornerRadius="12"
-                                Padding="20,16"
-                                Height="56">
+                                BorderThickness="1.5"
+                                CornerRadius="10"
+                                Padding="18,14"
+                                Height="52">
                             <PasswordBox x:Name="PasswordBox"
-                                         FontSize="15"
+                                         FontSize="14"
                                          FontWeight="Medium"
                                          Background="Transparent"
                                          BorderThickness="0"
@@ -89,35 +79,32 @@
                                          Password="123"/>
                         </Border>
                     </StackPanel>
-                    
-                    <!-- LOGIN BUTTON -->
-                    <Button Content="🔐 Iniciar Sesión"
+
+                    <Button Content="Iniciar sesión"
                             Style="{DynamicResource ButtonPrimary}"
-                            Height="56"
-                            FontSize="16"
+                            Height="52"
+                            FontSize="15"
                             FontWeight="Bold"
                             Name="LoginButton"
-                            Margin="0,0,0,20"/>
-                    
-                    <!-- THEME TOGGLE -->
-                    <Button Content="🎨 Cambiar Tema"
+                            Margin="0,0,0,14"/>
+
+                    <Button Content="Cambiar tema"
                             Style="{DynamicResource ButtonAccent}"
-                            Height="44"
+                            Height="42"
                             FontSize="13"
                             Name="ThemeToggleButton"
-                            Margin="0,0,0,16"/>
-                    
-                    <!-- ERROR MESSAGE -->
+                            Margin="0,0,0,14"/>
+
                     <Border Background="#FEF2F2"
                             BorderBrush="#FCA5A5"
                             BorderThickness="1"
                             CornerRadius="8"
-                            Padding="16,12"
+                            Padding="14,10"
                             Margin="0,8,0,0"
                             x:Name="ErrorContainer"
                             Visibility="Collapsed">
                         <TextBlock x:Name="ErrorMessage"
-                                   Foreground="#DC2626"
+                                   Foreground="#B91C1C"
                                    FontSize="13"
                                    FontWeight="SemiBold"
                                    TextWrapping="Wrap"

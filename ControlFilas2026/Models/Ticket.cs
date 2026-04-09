@@ -1,13 +1,18 @@
-namespace ControlFilas2026.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-public class Ticket
+namespace ControlFilas2026.Models
 {
-    public Ticket(string number, bool isSpecial)
+    public class Ticket
     {
-        Number = number;
-        IsSpecial = isSpecial;
-    }
+        public Ticket(string number, bool isSpecial)
+        {
+            Number = number;
+            IsSpecial = isSpecial;
+        }
 
-    public string Number { get; }
-    public bool IsSpecial { get; }
+        public string Number { get; }
+        public bool IsSpecial { get; }
+    }
 }
