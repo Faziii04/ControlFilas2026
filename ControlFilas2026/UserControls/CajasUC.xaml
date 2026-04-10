@@ -6,89 +6,105 @@
              xmlns:local="clr-namespace:ControlFilas2026.UserControls"
              mc:Ignorable="d">
     <Grid Background="{DynamicResource BrushBackground}">
-        <StackPanel Margin="16">
-            <TextBlock Text="Estado de Cajas" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource BrushPrimary}" Margin="0,0,0,16"/>
-            
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <WrapPanel>
-                    <!-- BOX 1 -->
-                    <Border Background="{DynamicResource BrushSurface}" BorderBrush="{DynamicResource BrushBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="8" Width="120" Height="140">
-                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <TextBlock Text="Caja 1" FontSize="12" Foreground="{DynamicResource BrushText}" HorizontalAlignment="Center" Margin="0,0,0,10" FontWeight="SemiBold"/>
-                            <Border Background="{DynamicResource BrushSuccess}" CornerRadius="35" Width="50" Height="50" HorizontalAlignment="Center" Margin="0,0,0,10">
-                                <TextBlock Text="✓" FontSize="28" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                            <TextBlock Text="Disponible" FontSize="11" Foreground="{DynamicResource BrushSuccess}" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+        <Grid Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Text="Cajas"
+                       Style="{DynamicResource SubHeaderText}"
+                       Margin="0,0,0,12"/>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <UniformGrid Columns="2" Rows="4">
+                    <Border Style="{DynamicResource CardStyle}">
+                        <StackPanel>
+                            <TextBlock Text="Caja 1" Style="{DynamicResource BodyText}" FontWeight="Bold"/>
+                            <TextBlock x:Name="Box1StatusText" Text="Disponible" Foreground="{DynamicResource BrushSuccess}" Margin="0,4,0,0"/>
+                            <TextBlock x:Name="Box1CurrentText" Text="Sin cliente" Style="{DynamicResource CaptionText}" Margin="0,2,0,8"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                <Button x:Name="CallBox1Button" Grid.Column="0" Content="Llamar" Style="{DynamicResource ButtonPrimary}" Margin="0,0,4,0"/>
+                                <Button x:Name="FreeBox1Button" Grid.Column="1" Content="Liberar" Style="{DynamicResource ButtonWarning}" Margin="4,0,0,0"/>
+                            </Grid>
                         </StackPanel>
                     </Border>
 
-                    <!-- BOX 2 -->
-                    <Border Background="{DynamicResource BrushSurface}" BorderBrush="{DynamicResource BrushBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="8" Width="120" Height="140">
-                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <TextBlock Text="Caja 2" FontSize="12" Foreground="{DynamicResource BrushText}" HorizontalAlignment="Center" Margin="0,0,0,10" FontWeight="SemiBold"/>
-                            <Border Background="{DynamicResource BrushSuccess}" CornerRadius="35" Width="50" Height="50" HorizontalAlignment="Center" Margin="0,0,0,10">
-                                <TextBlock Text="✓" FontSize="28" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                            <TextBlock Text="Disponible" FontSize="11" Foreground="{DynamicResource BrushSuccess}" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                    <Border Style="{DynamicResource CardStyle}">
+                        <StackPanel>
+                            <TextBlock Text="Caja 2" Style="{DynamicResource BodyText}" FontWeight="Bold"/>
+                            <TextBlock x:Name="Box2StatusText" Text="Disponible" Foreground="{DynamicResource BrushSuccess}" Margin="0,4,0,0"/>
+                            <TextBlock x:Name="Box2CurrentText" Text="Sin cliente" Style="{DynamicResource CaptionText}" Margin="0,2,0,8"/>
+                            <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                <Button x:Name="CallBox2Button" Grid.Column="0" Content="Llamar" Style="{DynamicResource ButtonPrimary}" Margin="0,0,4,0"/>
+                                <Button x:Name="FreeBox2Button" Grid.Column="1" Content="Liberar" Style="{DynamicResource ButtonWarning}" Margin="4,0,0,0"/>
+                            </Grid>
                         </StackPanel>
                     </Border>
 
-                    <!-- BOX 3 -->
-                    <Border Background="{DynamicResource BrushSurface}" BorderBrush="{DynamicResource BrushBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="8" Width="120" Height="140">
-                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <TextBlock Text="Caja 3" FontSize="12" Foreground="{DynamicResource BrushText}" HorizontalAlignment="Center" Margin="0,0,0,10" FontWeight="SemiBold"/>
-                            <Border Background="{DynamicResource BrushWarning}" CornerRadius="35" Width="50" Height="50" HorizontalAlignment="Center" Margin="0,0,0,10">
-                                <TextBlock Text="⏳" FontSize="28" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                            <TextBlock Text="Ocupada" FontSize="11" Foreground="{DynamicResource BrushWarning}" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                    <Border Style="{DynamicResource CardStyle}">
+                        <StackPanel>
+                            <TextBlock Text="Caja 3" Style="{DynamicResource BodyText}" FontWeight="Bold"/>
+                            <TextBlock x:Name="Box3StatusText" Text="Disponible" Foreground="{DynamicResource BrushSuccess}" Margin="0,4,0,0"/>
+                            <TextBlock x:Name="Box3CurrentText" Text="Sin cliente" Style="{DynamicResource CaptionText}" Margin="0,2,0,8"/>
+                            <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                <Button x:Name="CallBox3Button" Grid.Column="0" Content="Llamar" Style="{DynamicResource ButtonPrimary}" Margin="0,0,4,0"/>
+                                <Button x:Name="FreeBox3Button" Grid.Column="1" Content="Liberar" Style="{DynamicResource ButtonWarning}" Margin="4,0,0,0"/>
+                            </Grid>
                         </StackPanel>
                     </Border>
 
-                    <!-- BOX 4 -->
-                    <Border Background="{DynamicResource BrushSurface}" BorderBrush="{DynamicResource BrushBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="8" Width="120" Height="140">
-                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <TextBlock Text="Caja 4" FontSize="12" Foreground="{DynamicResource BrushText}" HorizontalAlignment="Center" Margin="0,0,0,10" FontWeight="SemiBold"/>
-                            <Border Background="{DynamicResource BrushSuccess}" CornerRadius="35" Width="50" Height="50" HorizontalAlignment="Center" Margin="0,0,0,10">
-                                <TextBlock Text="✓" FontSize="28" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                            <TextBlock Text="Disponible" FontSize="11" Foreground="{DynamicResource BrushSuccess}" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                    <Border Style="{DynamicResource CardStyle}">
+                        <StackPanel>
+                            <TextBlock Text="Caja 4" Style="{DynamicResource BodyText}" FontWeight="Bold"/>
+                            <TextBlock x:Name="Box4StatusText" Text="Disponible" Foreground="{DynamicResource BrushSuccess}" Margin="0,4,0,0"/>
+                            <TextBlock x:Name="Box4CurrentText" Text="Sin cliente" Style="{DynamicResource CaptionText}" Margin="0,2,0,8"/>
+                            <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                <Button x:Name="CallBox4Button" Grid.Column="0" Content="Llamar" Style="{DynamicResource ButtonPrimary}" Margin="0,0,4,0"/>
+                                <Button x:Name="FreeBox4Button" Grid.Column="1" Content="Liberar" Style="{DynamicResource ButtonWarning}" Margin="4,0,0,0"/>
+                            </Grid>
                         </StackPanel>
                     </Border>
 
-                    <!-- BOX 5 -->
-                    <Border Background="{DynamicResource BrushSurface}" BorderBrush="{DynamicResource BrushBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="8" Width="120" Height="140">
-                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <TextBlock Text="Caja 5" FontSize="12" Foreground="{DynamicResource BrushText}" HorizontalAlignment="Center" Margin="0,0,0,10" FontWeight="SemiBold"/>
-                            <Border Background="{DynamicResource BrushSuccess}" CornerRadius="35" Width="50" Height="50" HorizontalAlignment="Center" Margin="0,0,0,10">
-                                <TextBlock Text="✓" FontSize="28" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                            <TextBlock Text="Disponible" FontSize="11" Foreground="{DynamicResource BrushSuccess}" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                    <Border Style="{DynamicResource CardStyle}">
+                        <StackPanel>
+                            <TextBlock Text="Caja 5" Style="{DynamicResource BodyText}" FontWeight="Bold"/>
+                            <TextBlock x:Name="Box5StatusText" Text="Disponible" Foreground="{DynamicResource BrushSuccess}" Margin="0,4,0,0"/>
+                            <TextBlock x:Name="Box5CurrentText" Text="Sin cliente" Style="{DynamicResource CaptionText}" Margin="0,2,0,8"/>
+                            <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                <Button x:Name="CallBox5Button" Grid.Column="0" Content="Llamar" Style="{DynamicResource ButtonPrimary}" Margin="0,0,4,0"/>
+                                <Button x:Name="FreeBox5Button" Grid.Column="1" Content="Liberar" Style="{DynamicResource ButtonWarning}" Margin="4,0,0,0"/>
+                            </Grid>
                         </StackPanel>
                     </Border>
 
-                    <!-- BOX 6 -->
-                    <Border Background="{DynamicResource BrushSurface}" BorderBrush="{DynamicResource BrushBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="8" Width="120" Height="140">
-                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <TextBlock Text="Caja 6" FontSize="12" Foreground="{DynamicResource BrushText}" HorizontalAlignment="Center" Margin="0,0,0,10" FontWeight="SemiBold"/>
-                            <Border Background="{DynamicResource BrushAccent}" CornerRadius="35" Width="50" Height="50" HorizontalAlignment="Center" Margin="0,0,0,10">
-                                <TextBlock Text="✕" FontSize="28" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                            <TextBlock Text="Deshabilitada" FontSize="11" Foreground="{DynamicResource BrushAccent}" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                    <Border Style="{DynamicResource CardStyle}">
+                        <StackPanel>
+                            <TextBlock Text="Caja 6" Style="{DynamicResource BodyText}" FontWeight="Bold"/>
+                            <TextBlock x:Name="Box6StatusText" Text="Disponible" Foreground="{DynamicResource BrushSuccess}" Margin="0,4,0,0"/>
+                            <TextBlock x:Name="Box6CurrentText" Text="Sin cliente" Style="{DynamicResource CaptionText}" Margin="0,2,0,8"/>
+                            <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                <Button x:Name="CallBox6Button" Grid.Column="0" Content="Llamar" Style="{DynamicResource ButtonPrimary}" Margin="0,0,4,0"/>
+                                <Button x:Name="FreeBox6Button" Grid.Column="1" Content="Liberar" Style="{DynamicResource ButtonWarning}" Margin="4,0,0,0"/>
+                            </Grid>
                         </StackPanel>
                     </Border>
 
-                    <!-- BOX 7 -->
-                    <Border Background="{DynamicResource BrushSurface}" BorderBrush="{DynamicResource BrushBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="8" Width="120" Height="140">
-                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <TextBlock Text="Caja 7" FontSize="12" Foreground="{DynamicResource BrushText}" HorizontalAlignment="Center" Margin="0,0,0,10" FontWeight="SemiBold"/>
-                            <Border Background="{DynamicResource BrushSuccess}" CornerRadius="35" Width="50" Height="50" HorizontalAlignment="Center" Margin="0,0,0,10">
-                                <TextBlock Text="✓" FontSize="28" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                            <TextBlock Text="Disponible" FontSize="11" Foreground="{DynamicResource BrushSuccess}" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                    <Border Style="{DynamicResource CardStyle}">
+                        <StackPanel>
+                            <TextBlock Text="Caja 7" Style="{DynamicResource BodyText}" FontWeight="Bold"/>
+                            <TextBlock x:Name="Box7StatusText" Text="Disponible" Foreground="{DynamicResource BrushSuccess}" Margin="0,4,0,0"/>
+                            <TextBlock x:Name="Box7CurrentText" Text="Sin cliente" Style="{DynamicResource CaptionText}" Margin="0,2,0,8"/>
+                            <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                <Button x:Name="CallBox7Button" Grid.Column="0" Content="Llamar" Style="{DynamicResource ButtonPrimary}" Margin="0,0,4,0"/>
+                                <Button x:Name="FreeBox7Button" Grid.Column="1" Content="Liberar" Style="{DynamicResource ButtonWarning}" Margin="4,0,0,0"/>
+                            </Grid>
                         </StackPanel>
                     </Border>
-                </WrapPanel>
+                </UniformGrid>
             </ScrollViewer>
-        </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

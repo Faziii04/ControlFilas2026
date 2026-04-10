@@ -1,20 +1,14 @@
-namespace ControlFilas2026.Models
-{
-    public class Box
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public bool IsEnabled { get; set; }
-        public bool IsAvailable { get; set; }
-        public int CurrentClient { get; set; }
+﻿namespace ControlFilas2026.Models;
 
-        public Box(int id)
-        {
-            Id = id;
-            Name = $"Caja {id}";
-            IsEnabled = true;
-            IsAvailable = true;
-            CurrentClient = 0;
-        }
+public class Box
+{
+    public Box(int id)
+    {
+        Id = id;
+        IsEnabled = true;
     }
+
+    public int Id { get; }
+    public bool IsEnabled { get; set; }
+    public string? CurrentTicket { get; set; }
 }
