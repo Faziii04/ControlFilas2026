@@ -10,6 +10,7 @@ namespace ControlFilas2026.Models
         private Node? tail;
 
         public int Count { get; private set; }
+        public Node? Head => head;
 
         public void EnqueueNormal(Ticket ticket)
         {
@@ -27,7 +28,7 @@ namespace ControlFilas2026.Models
             int normalStreak = 0;
             var current = head;
 
-            while (current is not null)
+            while (current != null)
             {
                 if (current.Value.IsSpecial)
                 {
@@ -39,7 +40,7 @@ namespace ControlFilas2026.Models
 
                     if (normalStreak == 2)
                     {
-                        bool nextIsSpecial = current.Next is not null && current.Next.Value.IsSpecial;
+                        bool nextIsSpecial = current.Next != null && current.Next.Value.IsSpecial;
 
                         if (!nextIsSpecial)
                         {
@@ -71,7 +72,7 @@ namespace ControlFilas2026.Models
 
         public bool TryDequeue(out Ticket? ticket)
         {
-            if (head is null)
+            if (head == null)
             {
                 ticket = null;
                 return false;
@@ -80,7 +81,7 @@ namespace ControlFilas2026.Models
             ticket = head.Value;
             head = head.Next;
 
-            if (head is null)
+            if (head == null)
             {
                 tail = null;
             }
@@ -114,7 +115,7 @@ namespace ControlFilas2026.Models
             Count++;
         }
 
-        private sealed class Node
+        public class Node
         {
             public Node(Ticket value)
             {
@@ -122,7 +123,7 @@ namespace ControlFilas2026.Models
             }
 
             public Ticket Value { get; }
-            public Node? Next { get; set; }
+            public Node? Next { get; internal set; }
         }
     }
 }

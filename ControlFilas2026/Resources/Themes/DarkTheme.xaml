@@ -1,0 +1,148 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- DARK THEME COLORS -->
+    <Color x:Key="ColorPrimary">#60A5FA</Color>
+    <Color x:Key="ColorPrimaryLight">#93C5FD</Color>
+    <Color x:Key="ColorPrimaryDark">#1D4ED8</Color>
+    <Color x:Key="ColorSecondary">#34D399</Color>
+    <Color x:Key="ColorAccent">#0F172A</Color>
+    <Color x:Key="ColorSuccess">#22C55E</Color>
+    <Color x:Key="ColorWarning">#F59E0B</Color>
+    <Color x:Key="ColorError">#F87171</Color>
+
+    <Color x:Key="ColorBackground">#0B1220</Color>
+    <Color x:Key="ColorSurface">#111827</Color>
+    <Color x:Key="ColorCard">#1F2937</Color>
+    <Color x:Key="ColorOverlay">#020617</Color>
+
+    <Color x:Key="ColorText">#F8FAFC</Color>
+    <Color x:Key="ColorTextSecondary">#CBD5E1</Color>
+    <Color x:Key="ColorTextLight">#94A3B8</Color>
+
+    <Color x:Key="ColorBorder">#334155</Color>
+    <Color x:Key="ColorDivider">#1E293B</Color>
+
+    <!-- BRUSHES -->
+    <SolidColorBrush x:Key="BrushPrimary" Color="{DynamicResource ColorPrimary}"/>
+    <SolidColorBrush x:Key="BrushPrimaryLight" Color="{DynamicResource ColorPrimaryLight}"/>
+    <SolidColorBrush x:Key="BrushPrimaryDark" Color="{DynamicResource ColorPrimaryDark}"/>
+    <SolidColorBrush x:Key="BrushSecondary" Color="{DynamicResource ColorSecondary}"/>
+    <SolidColorBrush x:Key="BrushAccent" Color="{DynamicResource ColorAccent}"/>
+    <SolidColorBrush x:Key="BrushSuccess" Color="{DynamicResource ColorSuccess}"/>
+    <SolidColorBrush x:Key="BrushWarning" Color="{DynamicResource ColorWarning}"/>
+    <SolidColorBrush x:Key="BrushError" Color="{DynamicResource ColorError}"/>
+    <SolidColorBrush x:Key="BrushBackground" Color="{DynamicResource ColorBackground}"/>
+    <SolidColorBrush x:Key="BrushSurface" Color="{DynamicResource ColorSurface}"/>
+    <SolidColorBrush x:Key="BrushCard" Color="{DynamicResource ColorCard}"/>
+    <SolidColorBrush x:Key="BrushOverlay" Color="{DynamicResource ColorOverlay}"/>
+    <SolidColorBrush x:Key="BrushText" Color="{DynamicResource ColorText}"/>
+    <SolidColorBrush x:Key="BrushTextSecondary" Color="{DynamicResource ColorTextSecondary}"/>
+    <SolidColorBrush x:Key="BrushTextLight" Color="{DynamicResource ColorTextLight}"/>
+    <SolidColorBrush x:Key="BrushBorder" Color="{DynamicResource ColorBorder}"/>
+    <SolidColorBrush x:Key="BrushDivider" Color="{DynamicResource ColorDivider}"/>
+
+    <LinearGradientBrush x:Key="GradientPrimary" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="{DynamicResource ColorPrimary}" Offset="0"/>
+        <GradientStop Color="{DynamicResource ColorPrimaryLight}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="GradientSuccess" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#22C55E" Offset="0"/>
+        <GradientStop Color="#4ADE80" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="GradientWarning" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#F59E0B" Offset="0"/>
+        <GradientStop Color="#FBBF24" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- BUTTON STYLES -->
+    <Style x:Key="ButtonPrimary" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource GradientPrimary}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Padding" Value="18,11"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="6" ShadowDepth="1" Opacity="0.16" Direction="270"/>
+                        </Border.Effect>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" TextBlock.Foreground="White"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource BrushPrimaryLight}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource BrushPrimaryDark}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ButtonSuccess" TargetType="Button" BasedOn="{StaticResource ButtonPrimary}">
+        <Setter Property="Background" Value="{DynamicResource GradientSuccess}"/>
+    </Style>
+
+    <Style x:Key="ButtonWarning" TargetType="Button" BasedOn="{StaticResource ButtonPrimary}">
+        <Setter Property="Background" Value="{DynamicResource GradientWarning}"/>
+    </Style>
+
+    <Style x:Key="ButtonAccent" TargetType="Button" BasedOn="{StaticResource ButtonPrimary}">
+        <Setter Property="Background" Value="{DynamicResource BrushOverlay}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Padding" Value="14,9"/>
+    </Style>
+
+    <Style x:Key="CardStyle" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource BrushSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="22"/>
+        <Setter Property="Margin" Value="8"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.08" Direction="270"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="HeaderText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="28"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource BrushText}"/>
+    </Style>
+
+    <Style x:Key="SubHeaderText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource BrushText}"/>
+    </Style>
+
+    <Style x:Key="BodyText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Foreground" Value="{DynamicResource BrushText}"/>
+    </Style>
+
+    <Style x:Key="CaptionText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Foreground" Value="{DynamicResource BrushTextSecondary}"/>
+    </Style>
+
+    <Style x:Key="LabelText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource BrushText}"/>
+    </Style>
+</ResourceDictionary>

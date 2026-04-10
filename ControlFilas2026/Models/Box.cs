@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace ControlFilas2026.Models;
 
-namespace ControlFilas2026.Models
+public class Box
 {
-    internal class Box
+    public Box(int id)
     {
+        Id = id;
+        IsEnabled = true;
     }
+
+    public int Id { get; }
+    public bool IsEnabled { get; set; }
+    public string? CurrentTicket { get; set; }
 }

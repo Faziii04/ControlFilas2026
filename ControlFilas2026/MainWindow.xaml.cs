@@ -1,7 +1,7 @@
-﻿using System.Windows;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using ControlFilas2026.Helpers;
 using ControlFilas2026.Models;
 
 namespace ControlFilas2026;
@@ -9,9 +9,7 @@ namespace ControlFilas2026;
 public partial class MainWindow : Window
 {
     private readonly LinkedList queue = new();
-
-    private readonly bool[] boxEnabled = new bool[7];
-    private readonly string?[] boxCurrentTicket = new string?[7];
+    private readonly Box[] boxes = new Box[7];
 
     private Button[] callButtons = null!;
     private Button[] freeButtons = null!;
@@ -27,13 +25,14 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        for (int i = 0; i < boxEnabled.Length; i++)
+        for (int i = 0; i < boxes.Length; i++)
         {
-            boxEnabled[i] = true;
+            boxes[i] = new Box(i + 1);
         }
 
         InitializeLogin();
         InitializeDashboard();
+        UpdateThemeButtonsText();
     }
 
     private void InitializeLogin()
@@ -44,11 +43,11 @@ public partial class MainWindow : Window
 
     private void InitializeDashboard()
     {
-        ClienteControl.GetTicketButton.Click += (_, _) => TakeTicket(isSpecial: false);
-        ClienteControl.GetSpecialTicketButton.Click += (_, _) => TakeTicket(isSpecial: true);
+        ClienteControl.GetTicketButton.Click += (_, _) => TakeTicket(false);
+        ClienteControl.GetSpecialTicketButton.Click += (_, _) => TakeTicket(true);
 
-        callButtons =
-        [
+        callButtons = new Button[]
+        {
             CajasControl.CallBox1Button,
             CajasControl.CallBox2Button,
             CajasControl.CallBox3Button,
@@ -56,10 +55,10 @@ public partial class MainWindow : Window
             CajasControl.CallBox5Button,
             CajasControl.CallBox6Button,
             CajasControl.CallBox7Button
-        ];
+        };
 
-        freeButtons =
-        [
+        freeButtons = new Button[]
+        {
             CajasControl.FreeBox1Button,
             CajasControl.FreeBox2Button,
             CajasControl.FreeBox3Button,
@@ -67,10 +66,10 @@ public partial class MainWindow : Window
             CajasControl.FreeBox5Button,
             CajasControl.FreeBox6Button,
             CajasControl.FreeBox7Button
-        ];
+        };
 
-        statusTexts =
-        [
+        statusTexts = new TextBlock[]
+        {
             CajasControl.Box1StatusText,
             CajasControl.Box2StatusText,
             CajasControl.Box3StatusText,
@@ -78,10 +77,10 @@ public partial class MainWindow : Window
             CajasControl.Box5StatusText,
             CajasControl.Box6StatusText,
             CajasControl.Box7StatusText
-        ];
+        };
 
-        currentTexts =
-        [
+        currentTexts = new TextBlock[]
+        {
             CajasControl.Box1CurrentText,
             CajasControl.Box2CurrentText,
             CajasControl.Box3CurrentText,
@@ -89,7 +88,7 @@ public partial class MainWindow : Window
             CajasControl.Box5CurrentText,
             CajasControl.Box6CurrentText,
             CajasControl.Box7CurrentText
-        ];
+        };
 
         for (int i = 0; i < 7; i++)
         {
@@ -97,7 +96,7 @@ public partial class MainWindow : Window
             int boxNumber = i + 1;
 
             callButtons[i].Click += (_, _) => CallNext(boxIndex, boxNumber);
-            freeButtons[i].Click += (_, _) => FreeBox(boxIndex, boxNumber);
+            freeButtons[i].Click += (_, _) => FreeBox(boxIndex);
             AdminControl.BoxComboBox.Items.Add($"Caja {boxNumber}");
         }
 
@@ -107,9 +106,12 @@ public partial class MainWindow : Window
         AdminControl.EnableAllButton.Click += (_, _) => EnableAllBoxes();
         AdminControl.StartQueueButton.Click += (_, _) => StartQueue();
         AdminControl.RestartQueueButton.Click += (_, _) => RestartAll();
+        AdminControl.AdminThemeToggleButton.Click += (_, _) => ToggleTheme();
+        AdminControl.BackToLoginButton.Click += (_, _) => BackToLogin();
 
         RefreshBoxes();
         RefreshQueueCount();
+        RefreshRecentTickets();
     }
 
     private void HandleLogin()
@@ -136,11 +138,19 @@ public partial class MainWindow : Window
         ClienteControl.Visibility = Visibility.Visible;
     }
 
+    private void BackToLogin()
+    {
+        LoginControl.Visibility = Visibility.Visible;
+        AdminControl.Visibility = Visibility.Collapsed;
+        CajasControl.Visibility = Visibility.Collapsed;
+        ClienteControl.Visibility = Visibility.Collapsed;
+    }
+
     private void TakeTicket(bool isSpecial)
     {
         if (!queueStarted)
         {
-            ShowInfo("La fila no está iniciada.");
+            ShowError("La fila no está iniciada.");
             return;
         }
 
@@ -160,53 +170,52 @@ public partial class MainWindow : Window
         }
 
         ClienteControl.TicketNumberDisplay.Text = ticket.Number;
-        ShowInfo($"Turno generado: {ticket.Number}");
         RefreshQueueCount();
+        RefreshRecentTickets();
     }
 
     private void CallNext(int boxIndex, int boxNumber)
     {
         if (!queueStarted)
         {
-            ShowInfo("Primero inicie la fila.");
+            ShowError("Primero inicie la fila.");
             return;
         }
 
-        if (!boxEnabled[boxIndex])
+        if (!boxes[boxIndex].IsEnabled)
         {
-            ShowInfo($"Caja {boxNumber} deshabilitada.");
+            ShowError($"Caja {boxNumber} deshabilitada.");
             return;
         }
 
-        if (!string.IsNullOrEmpty(boxCurrentTicket[boxIndex]))
+        if (!string.IsNullOrEmpty(boxes[boxIndex].CurrentTicket))
         {
-            ShowInfo($"Caja {boxNumber} está ocupada.");
+            ShowError($"Caja {boxNumber} está ocupada.");
             return;
         }
 
-        if (!queue.TryDequeue(out Ticket? ticket) || ticket is null)
+        if (!queue.TryDequeue(out Ticket? ticket) || ticket == null)
         {
-            ShowInfo("No hay personas en espera.");
+            ShowError("No hay personas en espera.");
             return;
         }
 
-        boxCurrentTicket[boxIndex] = ticket.Number;
+        boxes[boxIndex].CurrentTicket = ticket.Number;
         LogCall($"Caja {boxNumber} llama a {ticket.Number}");
 
         RefreshBoxes();
         RefreshQueueCount();
+        RefreshRecentTickets();
     }
 
-    private void FreeBox(int boxIndex, int boxNumber)
+    private void FreeBox(int boxIndex)
     {
-        if (string.IsNullOrEmpty(boxCurrentTicket[boxIndex]))
+        if (string.IsNullOrEmpty(boxes[boxIndex].CurrentTicket))
         {
             return;
         }
 
-        LogCall($"Caja {boxNumber} finalizó {boxCurrentTicket[boxIndex]}");
-        boxCurrentTicket[boxIndex] = null;
-
+        boxes[boxIndex].CurrentTicket = null;
         RefreshBoxes();
     }
 
@@ -214,39 +223,36 @@ public partial class MainWindow : Window
     {
         int index = AdminControl.BoxComboBox.SelectedIndex;
 
-        if (index < 0 || index >= boxEnabled.Length)
+        if (index < 0 || index >= boxes.Length)
         {
-            ShowInfo("Seleccione una caja válida.");
+            ShowError("Seleccione una caja válida.");
             return;
         }
 
-        boxEnabled[index] = enabled;
+        boxes[index].IsEnabled = enabled;
 
         if (!enabled)
         {
-            boxCurrentTicket[index] = null;
+            boxes[index].CurrentTicket = null;
         }
 
         RefreshBoxes();
-        ShowInfo(enabled ? "Caja habilitada." : "Caja deshabilitada.");
     }
 
     private void EnableAllBoxes()
     {
-        for (int i = 0; i < boxEnabled.Length; i++)
+        for (int i = 0; i < boxes.Length; i++)
         {
-            boxEnabled[i] = true;
+            boxes[i].IsEnabled = true;
         }
 
         RefreshBoxes();
-        ShowInfo("Todas las cajas fueron habilitadas.");
     }
 
     private void StartQueue()
     {
         queueStarted = true;
         AdminControl.AdminStatusText.Text = "Estado: Iniciada";
-        ShowInfo("Fila iniciada.");
     }
 
     private void RestartAll()
@@ -256,10 +262,10 @@ public partial class MainWindow : Window
         specialCounter = 0;
         queue.Clear();
 
-        for (int i = 0; i < boxEnabled.Length; i++)
+        for (int i = 0; i < boxes.Length; i++)
         {
-            boxEnabled[i] = true;
-            boxCurrentTicket[i] = null;
+            boxes[i].IsEnabled = true;
+            boxes[i].CurrentTicket = null;
         }
 
         ClienteControl.CallsListBox.Items.Clear();
@@ -268,7 +274,7 @@ public partial class MainWindow : Window
 
         RefreshBoxes();
         RefreshQueueCount();
-        ShowInfo("Sistema reiniciado.");
+        RefreshRecentTickets();
     }
 
     private void RefreshQueueCount()
@@ -284,7 +290,7 @@ public partial class MainWindow : Window
 
         for (int i = 0; i < 7; i++)
         {
-            if (!boxEnabled[i])
+            if (!boxes[i].IsEnabled)
             {
                 statusTexts[i].Text = "Deshabilitada";
                 statusTexts[i].Foreground = errorBrush;
@@ -292,7 +298,7 @@ public partial class MainWindow : Window
                 continue;
             }
 
-            if (string.IsNullOrEmpty(boxCurrentTicket[i]))
+            if (string.IsNullOrEmpty(boxes[i].CurrentTicket))
             {
                 statusTexts[i].Text = "Disponible";
                 statusTexts[i].Foreground = successBrush;
@@ -302,9 +308,25 @@ public partial class MainWindow : Window
             {
                 statusTexts[i].Text = "Atendiendo";
                 statusTexts[i].Foreground = warningBrush;
-                currentTexts[i].Text = boxCurrentTicket[i];
+                currentTexts[i].Text = boxes[i].CurrentTicket;
             }
         }
+    }
+
+    private void RefreshRecentTickets()
+    {
+        ObservableCollection<string> orderedTickets = new ObservableCollection<string>();
+        LinkedList.Node? current = queue.Head;
+        int position = 1;
+
+        while (current != null)
+        {
+            orderedTickets.Add($"{position}. {current.Value.Number}");
+            current = current.Next;
+            position++;
+        }
+
+        ClienteControl.RecentTicketsListBox.ItemsSource = orderedTickets;
     }
 
     private void LogCall(string message)
@@ -323,15 +345,27 @@ public partial class MainWindow : Window
         LoginControl.ErrorContainer.Visibility = Visibility.Collapsed;
     }
 
-    private void ShowInfo(string message)
-    {
-        MessageBox.Show(message, "Control de Filas", MessageBoxButton.OK, MessageBoxImage.Information);
-    }
-
     private void ToggleTheme()
     {
         darkTheme = !darkTheme;
-        ThemeHelper.ApplyTheme(darkTheme);
-        LoginControl.ThemeToggleButton.Content = darkTheme ? "Tema claro" : "Tema oscuro";
+
+        var appResources = Application.Current.Resources;
+        var dictionaries = appResources.MergedDictionaries;
+        dictionaries.Clear();
+
+        var source = darkTheme
+            ? new Uri("Resources/Themes/DarkTheme.xaml", UriKind.Relative)
+            : new Uri("Resources/Themes/LightTheme.xaml", UriKind.Relative);
+
+        dictionaries.Add(new ResourceDictionary { Source = source });
+
+        UpdateThemeButtonsText();
+    }
+
+    private void UpdateThemeButtonsText()
+    {
+        string text = darkTheme ? "Tema claro" : "Tema oscuro";
+        LoginControl.ThemeToggleButton.Content = text;
+        AdminControl.AdminThemeToggleButton.Content = text;
     }
 }

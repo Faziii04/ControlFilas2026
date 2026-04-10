@@ -39,6 +39,13 @@
 
                 <Border Style="{DynamicResource CardStyle}">
                     <StackPanel>
+                        <TextBlock Text="Tickets recientes (posición)" Style="{DynamicResource BodyText}" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                        <ListBox x:Name="RecentTicketsListBox" Height="120" Background="{DynamicResource BrushCard}" BorderBrush="{DynamicResource BrushBorder}" BorderThickness="1"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{DynamicResource CardStyle}">
+                    <StackPanel>
                         <TextBlock Text="Personas en espera" Style="{DynamicResource CaptionText}"/>
                         <TextBlock x:Name="QueuePositionText" Text="0" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource BrushSecondary}"/>
                     </StackPanel>
