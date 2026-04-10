@@ -4,133 +4,127 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ControlFilas2026.UserControls"
-             mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800">
-    <Grid Background="{DynamicResource BackgroundBrush}">
-        <Viewbox Stretch="Uniform" MaxWidth="500" MaxHeight="700">
-            <Border Background="{DynamicResource SurfaceBrush}" 
-                    CornerRadius="16" 
-                    BorderBrush="{DynamicResource DividerBrush}"
-                    BorderThickness="2"
-                    Padding="60,50"
-                    Width="500"
+             mc:Ignorable="d">
+    <Grid>
+        <!-- BACKGROUND GRADIENT OVERLAY -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#F8FAFC" Offset="0"/>
+                <GradientStop Color="#E2E8F0" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        
+        <!-- MAIN LOGIN CONTAINER -->
+        <Grid MaxWidth="450" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <!-- GLASSMORPHISM CARD -->
+            <Border Background="White"
+                    CornerRadius="24"
+                    Padding="48"
                     Margin="20">
-                <StackPanel VerticalAlignment="Center">
-                    <Ellipse Width="80" Height="80" 
-                             Fill="{DynamicResource PrimaryBrush}"
-                             HorizontalAlignment="Center"
-                             Margin="0,0,0,25"/>
-
-                    <TextBlock Text="Control de Filas" 
-                               FontSize="28" 
-                               FontWeight="Bold" 
-                               Foreground="{DynamicResource PrimaryBrush}"
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="40" ShadowDepth="8" Opacity="0.15" Direction="270"/>
+                </Border.Effect>
+                
+                <StackPanel>
+                    <!-- MODERN LOGO -->
+                    <Grid HorizontalAlignment="Center" Margin="0,0,0,32">
+                        <Ellipse Width="96" Height="96" Fill="{DynamicResource GradientPrimary}"/>
+                        <TextBlock Text="🏦" FontSize="48" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"
+                                   Effect="{x:Null}"/>
+                    </Grid>
+                    
+                    <!-- TITLE SECTION -->
+                    <TextBlock Text="Control de Filas"
+                               Style="{DynamicResource HeaderText}"
                                HorizontalAlignment="Center"
                                Margin="0,0,0,8"/>
-                    <TextBlock Text="Sistema Bancario" 
-                               FontSize="14" 
-                               Foreground="{DynamicResource SecondaryBrush}"
+                    <TextBlock Text="Sistema Bancario Digital"
+                               Style="{DynamicResource CaptionText}"
                                HorizontalAlignment="Center"
-                               Margin="0,0,0,32"
-                               FontWeight="Medium"/>
-
-                    <Rectangle Height="3" 
-                               Fill="{DynamicResource PrimaryBrush}" 
-                               Width="60"
-                               Margin="0,0,0,32"
-                               HorizontalAlignment="Center"/>
-
-
-                    <TextBlock Text="Usuario" 
-                               Foreground="{DynamicResource TextBrush}"
-                               Margin="0,0,0,10"
-                               FontWeight="SemiBold"
-                               FontSize="13"/>
-                    <TextBox Name="UsernameTextBox" 
-                             Height="45" 
-                             Padding="14,12"
-                             FontSize="13"
-                             Background="{DynamicResource LightGrayBrush}"
-                             BorderBrush="{DynamicResource BorderBrush}"
-                             BorderThickness="2"
-                             Margin="0,0,0,22"
-                             VerticalAlignment="Center"
-                             VerticalContentAlignment="Center">
-                        <TextBox.Style>
-                            <Style TargetType="TextBox">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="TextBox">
-                                            <Border BorderBrush="{TemplateBinding BorderBrush}" 
-                                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                                    CornerRadius="8"
-                                                    Background="{TemplateBinding Background}">
-                                                <ScrollViewer x:Name="PART_ContentHost" 
-                                                              Padding="{TemplateBinding Padding}"
-                                                              VerticalAlignment="Center"/>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
-
-                    <TextBlock Text="Contraseña" 
-                               Foreground="{DynamicResource TextBrush}"
-                               Margin="0,0,0,10"
-                               FontWeight="SemiBold"
-                               FontSize="13"/>
-                    <PasswordBox Name="PasswordBox" 
-                                 Height="45" 
-                                 Padding="14,12"
-                                 FontSize="13"
-                                 Background="{DynamicResource LightGrayBrush}"
-                                 BorderBrush="{DynamicResource BorderBrush}"
-                                 BorderThickness="2"
-                                 Margin="0,0,0,30"
-                                 VerticalAlignment="Center"
-                                 VerticalContentAlignment="Center">
-                        <PasswordBox.Style>
-                            <Style TargetType="PasswordBox">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="PasswordBox">
-                                            <Border BorderBrush="{TemplateBinding BorderBrush}" 
-                                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                                    CornerRadius="8"
-                                                    Background="{TemplateBinding Background}">
-                                                <ScrollViewer x:Name="PART_ContentHost" 
-                                                              Padding="{TemplateBinding Padding}"
-                                                              VerticalAlignment="Center"/>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </PasswordBox.Style>
-                    </PasswordBox>
-
-                    <Button Content="Ingresar" 
-                            Style="{StaticResource ModernButtonStyle}"
-                            Height="50"
+                               FontWeight="Medium"
+                               Margin="0,0,0,40"/>
+                    
+                    <!-- USERNAME INPUT -->
+                    <StackPanel Margin="0,0,0,24">
+                        <TextBlock Text="Nombre de Usuario"
+                                   Style="{DynamicResource LabelText}"
+                                   Margin="0,0,0,12"/>
+                        <Border Background="{DynamicResource BrushCard}"
+                                BorderBrush="{DynamicResource BrushBorder}"
+                                BorderThickness="2"
+                                CornerRadius="12"
+                                Padding="20,16"
+                                Height="56">
+                            <TextBox x:Name="UsernameTextBox"
+                                     FontSize="15"
+                                     FontWeight="Medium"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     Foreground="{DynamicResource BrushText}"
+                                     VerticalAlignment="Center"
+                                     Text="admin"/>
+                        </Border>
+                    </StackPanel>
+                    
+                    <!-- PASSWORD INPUT -->
+                    <StackPanel Margin="0,0,0,32">
+                        <TextBlock Text="Contraseña"
+                                   Style="{DynamicResource LabelText}"
+                                   Margin="0,0,0,12"/>
+                        <Border Background="{DynamicResource BrushCard}"
+                                BorderBrush="{DynamicResource BrushBorder}"
+                                BorderThickness="2"
+                                CornerRadius="12"
+                                Padding="20,16"
+                                Height="56">
+                            <PasswordBox x:Name="PasswordBox"
+                                         FontSize="15"
+                                         FontWeight="Medium"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         Foreground="{DynamicResource BrushText}"
+                                         VerticalAlignment="Center"
+                                         Password="123"/>
+                        </Border>
+                    </StackPanel>
+                    
+                    <!-- LOGIN BUTTON -->
+                    <Button Content="🔐 Iniciar Sesión"
+                            Style="{DynamicResource ButtonPrimary}"
+                            Height="56"
                             FontSize="16"
                             FontWeight="Bold"
-                            Background="{DynamicResource PrimaryBrush}"
                             Name="LoginButton"
-                            Margin="0,0,0,18"
-                            Cursor="Hand"/>
-
-                    <TextBlock Name="ErrorMessage"
-                               Foreground="{DynamicResource AccentBrush}"
-                               FontSize="13"
-                               Margin="0,0,0,0"
-                               TextWrapping="Wrap"
-                               Visibility="Collapsed"
-                               FontWeight="SemiBold"
-                               TextAlignment="Center"/>
+                            Margin="0,0,0,20"/>
+                    
+                    <!-- THEME TOGGLE -->
+                    <Button Content="🎨 Cambiar Tema"
+                            Style="{DynamicResource ButtonAccent}"
+                            Height="44"
+                            FontSize="13"
+                            Name="ThemeToggleButton"
+                            Margin="0,0,0,16"/>
+                    
+                    <!-- ERROR MESSAGE -->
+                    <Border Background="#FEF2F2"
+                            BorderBrush="#FCA5A5"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="16,12"
+                            Margin="0,8,0,0"
+                            x:Name="ErrorContainer"
+                            Visibility="Collapsed">
+                        <TextBlock x:Name="ErrorMessage"
+                                   Foreground="#DC2626"
+                                   FontSize="13"
+                                   FontWeight="SemiBold"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"/>
+                    </Border>
                 </StackPanel>
             </Border>
-        </Viewbox>
+        </Grid>
     </Grid>
 </UserControl>
